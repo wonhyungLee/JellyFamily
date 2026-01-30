@@ -1,0 +1,26 @@
+# Environment
+.env
+
+# Node
+node_modules/
+
+# Flutter/Dart
+jelly_family_app/.dart_tool/
+jelly_family_app/.packages
+jelly_family_app/.pub-cache/
+jelly_family_app/build/
+jelly_family_app/android/.gradle/
+jelly_family_app/android/app/.cxx/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Debug assets (screenshots)
+debug/
