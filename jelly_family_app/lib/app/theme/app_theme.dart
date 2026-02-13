@@ -16,9 +16,9 @@ class AppTheme {
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
-        color: scheme.surfaceVariant.withOpacity(0.35),
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
         surfaceTintColor: Colors.transparent,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
@@ -27,7 +27,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: scheme.surfaceVariant.withOpacity(0.35),
+        fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: scheme.outlineVariant),
@@ -63,4 +63,3 @@ class AppTheme {
     );
   }
 }
-

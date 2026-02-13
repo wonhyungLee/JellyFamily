@@ -44,7 +44,6 @@ class _ChildHomeState extends State<ChildHome> {
   List<dynamic> _requests = [];
   Map<String, dynamic>? _challengeMonth;
   Set<String> _holidaySet = {};
-  Set<String> _normalGrantSet = {};
   Map<String, Set<String>> _grantDatesByChallenge = {};
   List<String> _requiredDates = [];
 
@@ -182,7 +181,6 @@ class _ChildHomeState extends State<ChildHome> {
         _requests = requests;
         _challengeMonth = challenge;
         _holidaySet = holidaySet;
-        _normalGrantSet = normalGrantSet;
         _grantDatesByChallenge = grantDatesByChallenge;
         _requiredDates = requiredDates;
         _specialStatus = eligibility.specialStatus;
@@ -247,7 +245,7 @@ class _ChildHomeState extends State<ChildHome> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: challengeA,
+                    initialValue: challengeA,
                     items: challengeTypes
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -261,7 +259,7 @@ class _ChildHomeState extends State<ChildHome> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: challengeB,
+                    initialValue: challengeB,
                     items: challengeTypes
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -343,7 +341,7 @@ class _ChildHomeState extends State<ChildHome> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: jelly,
+                    initialValue: jelly,
                     items: jellyTypes
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -553,8 +551,8 @@ class _ChildHomeState extends State<ChildHome> {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
           decoration: BoxDecoration(
             color: selected
-                ? scheme.primaryContainer.withOpacity(0.55)
-                : scheme.surfaceVariant.withOpacity(0.35),
+                ? scheme.primaryContainer.withValues(alpha: 0.55)
+                : scheme.surfaceContainerHighest.withValues(alpha: 0.35),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: selected ? scheme.primary : scheme.outlineVariant,
@@ -579,7 +577,7 @@ class _ChildHomeState extends State<ChildHome> {
                 style: TextStyle(
                   fontSize: 12,
                   color: selected
-                      ? scheme.onPrimaryContainer.withOpacity(0.8)
+                      ? scheme.onPrimaryContainer.withValues(alpha: 0.8)
                       : scheme.onSurfaceVariant,
                 ),
               ),
@@ -592,9 +590,9 @@ class _ChildHomeState extends State<ChildHome> {
 
   Color _cellColor(bool rewarded, bool isHoliday) {
     final scheme = Theme.of(context).colorScheme;
-    if (isHoliday) return scheme.surfaceVariant.withOpacity(0.22);
+    if (isHoliday) return scheme.surfaceContainerHighest.withValues(alpha: 0.22);
     if (rewarded) return Colors.green.shade200;
-    return scheme.surfaceVariant.withOpacity(0.35);
+    return scheme.surfaceContainerHighest.withValues(alpha: 0.35);
   }
 
   Widget _buildCalendarFor(String challengeType) {
@@ -724,12 +722,18 @@ class _ChildHomeState extends State<ChildHome> {
               icon: Icons.check_circle,
             ),
             _legendChip(
-              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.35),
+              color: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withValues(alpha: 0.35),
               label: '대기',
               icon: Icons.schedule,
             ),
             _legendChip(
-              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.22),
+              color: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withValues(alpha: 0.22),
               label: '휴일',
               icon: Icons.event_busy,
             ),
@@ -1100,7 +1104,7 @@ class _ChildHomeState extends State<ChildHome> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: scheme.surfaceVariant.withOpacity(0.28),
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.28),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: scheme.outlineVariant),
       ),
@@ -1123,7 +1127,8 @@ class _ChildHomeState extends State<ChildHome> {
                   child: LinearProgressIndicator(
                     minHeight: 8,
                     value: percent / 100.0,
-                    backgroundColor: scheme.surfaceVariant.withOpacity(0.6),
+                    backgroundColor:
+                        scheme.surfaceContainerHighest.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -1241,7 +1246,7 @@ class _ChildHomeState extends State<ChildHome> {
       'REQUESTED' => (
           'assets/ui/status/ic_status_requested.png',
           '요청됨',
-          scheme.tertiaryContainer.withOpacity(0.6),
+          scheme.tertiaryContainer.withValues(alpha: 0.6),
         ),
       'SETTLED' => (
           'assets/ui/status/ic_status_settled.png',
@@ -1251,7 +1256,7 @@ class _ChildHomeState extends State<ChildHome> {
       _ => (
           'assets/ui/status/ic_status_requested.png',
           status,
-          scheme.surfaceVariant.withOpacity(0.35),
+          scheme.surfaceContainerHighest.withValues(alpha: 0.35),
         ),
     };
 
@@ -1369,4 +1374,3 @@ class _ChildHomeState extends State<ChildHome> {
     );
   }
 }
-

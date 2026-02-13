@@ -150,7 +150,7 @@ class _ParentHomeState extends State<ParentHome> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<dynamic>(
-                    value: selectedChild,
+                    initialValue: selectedChild,
                     items: _children
                         .map((child) => DropdownMenuItem(
                               value: child,
@@ -164,7 +164,7 @@ class _ParentHomeState extends State<ParentHome> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: challenge,
+                    initialValue: challenge,
                     items: challengeTypes
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -178,7 +178,7 @@ class _ParentHomeState extends State<ParentHome> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: jelly,
+                    initialValue: jelly,
                     items: parentJellyTypes
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -192,7 +192,7 @@ class _ParentHomeState extends State<ParentHome> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: targetDate,
+                    initialValue: targetDate,
                     items: [
                       seoulDateString(),
                       seoulDateString(-1),
@@ -394,8 +394,8 @@ class _ParentHomeState extends State<ParentHome> {
                   decoration: BoxDecoration(
                     color: Theme.of(context)
                         .colorScheme
-                        .surfaceVariant
-                        .withOpacity(0.26),
+                        .surfaceContainerHighest
+                        .withValues(alpha: 0.26),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outlineVariant,
@@ -516,7 +516,7 @@ class _ParentHomeState extends State<ParentHome> {
       'REQUESTED' => (
           'assets/ui/status/ic_status_requested.png',
           '요청됨',
-          scheme.tertiaryContainer.withOpacity(0.6),
+          scheme.tertiaryContainer.withValues(alpha: 0.6),
         ),
       'SETTLED' => (
           'assets/ui/status/ic_status_settled.png',
@@ -526,7 +526,7 @@ class _ParentHomeState extends State<ParentHome> {
       _ => (
           'assets/ui/status/ic_status_requested.png',
           status,
-          scheme.surfaceVariant.withOpacity(0.35),
+          scheme.surfaceContainerHighest.withValues(alpha: 0.35),
         ),
     };
 

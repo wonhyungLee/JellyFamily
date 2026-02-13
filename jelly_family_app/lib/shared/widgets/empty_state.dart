@@ -30,7 +30,7 @@ class EmptyState extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: scheme.surfaceVariant.withOpacity(0.45),
+                  color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -65,4 +65,3 @@ class EmptyState extends StatelessWidget {
     );
   }
 }
-

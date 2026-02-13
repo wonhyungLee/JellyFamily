@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 12),
                           DropdownButtonFormField<UserOption>(
-                            value: _selected,
+                            initialValue: _selected,
                             decoration: const InputDecoration(
                               labelText: '이름',
                             ),
@@ -219,4 +219,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

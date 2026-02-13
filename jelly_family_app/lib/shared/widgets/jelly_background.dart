@@ -12,7 +12,7 @@ class JellyBackground extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            scheme.primaryContainer.withOpacity(0.45),
+            scheme.primaryContainer.withValues(alpha: 0.45),
             scheme.surface,
             scheme.surface,
           ],
@@ -24,4 +24,3 @@ class JellyBackground extends StatelessWidget {
     );
   }
 }
-
