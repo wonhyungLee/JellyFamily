@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jelly_family_app/domain/constants.dart';
+import 'package:jelly_family_app/features/child/widgets/daily_praise_card.dart';
 import 'package:jelly_family_app/shared/utils/number_format.dart';
 import 'package:jelly_family_app/shared/utils/seoul_time.dart';
 import 'package:jelly_family_app/shared/widgets/empty_state.dart';
 import 'package:jelly_family_app/shared/widgets/error_state.dart';
+import 'package:jelly_family_app/shared/widgets/jelly_reward_dialog.dart';
 import 'package:jelly_family_app/shared/widgets/loading_state.dart';
 import 'package:jelly_family_app/shared/widgets/section_header.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -439,7 +441,8 @@ class _ChildHomeState extends State<ChildHome> {
       await _supabase.functions.invoke('claim-reward', body: {
         'jelly': jelly,
       });
-      _showSnack('$jelly 젤리를 받았습니다');
+      if (!mounted) return;
+      await showJellyRewardDialog(context, jelly: jelly);
       await _load();
     } on FunctionException catch (error) {
       _showSnack('요청 실패: ${error.details ?? error.reasonPhrase ?? error.status}');
@@ -944,6 +947,9 @@ class _ChildHomeState extends State<ChildHome> {
     final challenge = _challengeMonth;
     final a = challenge?['challenge_a'] as String?;
     final b = challenge?['challenge_b'] as String?;
+    final today = seoulDateString();
+    final todayHoliday = _holidaySet.contains(today);
+    final todayDone = _isTodayChallengeDone(today);
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -956,6 +962,18 @@ class _ChildHomeState extends State<ChildHome> {
               ?.copyWith(fontWeight: FontWeight.w900),
         ),
         const SizedBox(height: 14),
+        if (todayDone)
+          const DailyPraiseCard(
+            headline: '오늘 챌린지 완료!',
+            message: '대단해. 오늘은 더 할 챌린지가 없어요.',
+          )
+        else if (a != null && b != null && todayHoliday)
+          const DailyPraiseCard(
+            headline: '오늘은 쉬는 날!',
+            message: '휴일에는 마음껏 쉬어도 돼요.',
+          ),
+        if (todayDone || (a != null && b != null && todayHoliday))
+          const SizedBox(height: 14),
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -1095,6 +1113,17 @@ class _ChildHomeState extends State<ChildHome> {
         ],
       ],
     );
+  }
+
+  bool _isTodayChallengeDone(String today) {
+    final challenge = _challengeMonth;
+    final a = challenge?['challenge_a'] as String?;
+    final b = challenge?['challenge_b'] as String?;
+    if (a == null || b == null) return false;
+    if (_holidaySet.contains(today)) return false;
+    final aRewarded = (_grantDatesByChallenge[a] ?? <String>{}).contains(today);
+    final bRewarded = (_grantDatesByChallenge[b] ?? <String>{}).contains(today);
+    return aRewarded && bRewarded;
   }
 
   Widget _challengeProgressCard(String type) {
