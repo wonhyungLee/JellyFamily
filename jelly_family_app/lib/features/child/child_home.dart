@@ -70,6 +70,9 @@ class _ChildHomeState extends State<ChildHome> {
     });
 
     try {
+      final hadPreviousWallet = _wallet != null;
+      final previousNormalCount = (_wallet?['jelly_normal'] as int?) ?? 0;
+
       final assetsReady = await _checkAssets();
       final userId = _supabase.auth.currentUser!.id;
       final now = seoulNow();
@@ -80,6 +83,8 @@ class _ChildHomeState extends State<ChildHome> {
           .select('*')
           .eq('user_id', userId)
           .single();
+      final newNormalCount = (wallet['jelly_normal'] as int?) ?? 0;
+      final normalIncreased = hadPreviousWallet && newNormalCount > previousNormalCount;
 
       final requests = await _supabase
           .from('allowance_requests')
@@ -199,6 +204,13 @@ class _ChildHomeState extends State<ChildHome> {
         }
         _assetsReady = assetsReady;
       });
+
+      // Show a celebratory "jelly open" animation when NORMAL jelly increases
+      // (typically granted by parents). This runs after state update so the UI
+      // refreshes even if the dialog is dismissed quickly.
+      if (normalIncreased && mounted) {
+        await showJellyRewardDialog(context, jelly: 'NORMAL');
+      }
     } catch (error) {
       setState(() => _loadError = '$error');
       _showSnack('데이터 로드 실패: $error');

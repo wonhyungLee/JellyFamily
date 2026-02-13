@@ -7,6 +7,7 @@ import 'package:jelly_family_app/shared/utils/number_format.dart';
 import 'package:jelly_family_app/shared/utils/seoul_time.dart';
 import 'package:jelly_family_app/shared/widgets/empty_state.dart';
 import 'package:jelly_family_app/shared/widgets/error_state.dart';
+import 'package:jelly_family_app/shared/widgets/jelly_reward_dialog.dart';
 import 'package:jelly_family_app/shared/widgets/loading_state.dart';
 import 'package:jelly_family_app/shared/widgets/section_header.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -280,7 +281,13 @@ class _ParentHomeState extends State<ParentHome> {
     setState(() => _busy = true);
     try {
       await _supabase.functions.invoke(name, body: body);
-      _showSnack('완료');
+      if (!mounted) return;
+      if (name == 'grant-jelly') {
+        final jelly = body['jelly'] as String? ?? 'NORMAL';
+        await showJellyRewardDialog(context, jelly: jelly);
+      } else {
+        _showSnack('완료');
+      }
       await _load();
     } on FunctionException catch (error) {
       _showSnack('요청 실패: ${error.details ?? error.reasonPhrase ?? error.status}');
